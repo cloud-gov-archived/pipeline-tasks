@@ -1,0 +1,27 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: general-task
+    aws_region: us-gov-west-1
+    tag: latest
+
+inputs:
+  - name: github-release
+  - name: pipeline-tasks
+
+run:
+  path: pipeline-tasks/gh-release-notifier.sh
+
+params:
+  CLOSE_OLD_ISSUES: # Close old issues created by this task to prevent issue build up. Ex: true
+  DEPENDENCY_NAME: # The name of the dependency to alert on. Ex: wazuh-agent
+  GH_REPO: # The GitHub repo in which to open the issue. Ex: https://github.com/cloud-gov/wazuh-agent
+  GH_TOKEN: # The GitHub personal access token to use to manage issues in the $GH_REPO. Ex: nicetrynotgoingtohappen
+  PROJECT_NAME: # The name of the project to add the issue to. Ex: cloud.gov team
+  SQUAD_LABEL: # The name of the squad, matching GitHub squad lables, responsible for this issue. Ex: squad-platform.
+
